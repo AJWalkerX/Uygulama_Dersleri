@@ -60,4 +60,15 @@ public class LikeRepository implements ICRUD<Like> {
         }
         return Optional.empty();
     }
+    
+    public Optional<Like> findByVideoAndUserId(Long videoId, Long userId) {
+        String sql = "SELECT * FROM " + TABLE_NAME +" WHERE video_id = "+ videoId +" AND user_id = " + userId +" ORDER" +
+                " BY" +
+                " id DESC";
+        Optional<ResultSet> resultSet = databaseHelper.executeQuery(sql);
+        if (resultSet.isPresent()) {
+            return findBy(Like.class, resultSet.get());
+        }
+        return Optional.empty();
+    }
 }

@@ -8,9 +8,10 @@ public class Like extends BaseEntity {
     public Like() {
     }
 
-    public Like(Long user_id, Long video_id, char state) {
+    public Like(Long user_id, Long video_id, Integer state) {
         this.user_id = user_id;
         this.video_id = video_id;
+        this.state = state;
     }
 
     public Long getUser_id() {
@@ -38,4 +39,6 @@ public class Like extends BaseEntity {
                 ", state=" + state +
                 '}';
     }
+    
+    
 }

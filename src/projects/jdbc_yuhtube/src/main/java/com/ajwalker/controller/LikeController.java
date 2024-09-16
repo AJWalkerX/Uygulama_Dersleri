@@ -1,6 +1,8 @@
 package com.ajwalker.controller;
 
 import com.ajwalker.entity.Like;
+import com.ajwalker.entity.User;
+import com.ajwalker.entity.Video;
 import com.ajwalker.repository.LikeRepository;
 import com.ajwalker.service.LikeService;
 
@@ -39,4 +41,10 @@ public class LikeController {
     public Optional<Like> findById(Long id) {
         return likeService.findById(id);
     }
+    
+    public void likeTheVideo(Video video, User user) {
+        likeService.likeTheVideo(video, user);
+    }
+    
+    
 }

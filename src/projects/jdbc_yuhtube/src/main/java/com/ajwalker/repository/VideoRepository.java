@@ -16,7 +16,7 @@ public class VideoRepository implements ICRUD<Video> {
     private final String TABLE_NAME = "tblvideo";
     private DatabaseHelper databaseHelper;
     private static VideoRepository instance;
-
+    private static String sql;
     VideoRepository() {
         this.databaseHelper = new DatabaseHelper();
     }
@@ -45,18 +45,30 @@ public class VideoRepository implements ICRUD<Video> {
 
     @Override
     public List<Video> findAll() {
-        String sql = "SELECT * FROM " + TABLE_NAME +" ORDER BY id DESC";
+        sql = "SELECT * FROM " + TABLE_NAME +" ORDER BY id DESC";
         Optional<ResultSet> resultSet = databaseHelper.executeQuery(sql);
         return resultSet.map(set -> generateList(Video.class, set)).orElseGet(ArrayList::new);
     }
 
     @Override
     public Optional<Video> findById(Long id) {
-        String sql = "SELECT * FROM " + TABLE_NAME +" WHERE id = "+ id +" ORDER BY id DESC";
+        sql = "SELECT * FROM " + TABLE_NAME +" WHERE id = "+ id +" ORDER BY id DESC";
         Optional<ResultSet> resultSet = databaseHelper.executeQuery(sql);
         if (resultSet.isPresent()) {
             return findBy(Video.class, resultSet.get());
         }
         return Optional.empty();
+    }
+    
+    public List<Video> findByTitle(String videoTitle) {
+        sql = "SELECT * FROM " + TABLE_NAME +" WHERE title ILIKE '%"+ videoTitle +"%' ORDER BY id DESC";
+        Optional<ResultSet> resultSet = databaseHelper.executeQuery(sql);
+        return resultSet.map(set -> generateList(Video.class, set)).orElseGet(ArrayList::new);
+    }
+    
+    public List<Video> findByCreatorId(User user) {
+        sql = "SELECT * FROM " + TABLE_NAME +" WHERE creator_id = "+ user.getId() +" ORDER BY id DESC";
+        Optional<ResultSet> resultSet = databaseHelper.executeQuery(sql);
+        return resultSet.map(set -> generateList(Video.class, set)).orElseGet(ArrayList::new);
     }
 }

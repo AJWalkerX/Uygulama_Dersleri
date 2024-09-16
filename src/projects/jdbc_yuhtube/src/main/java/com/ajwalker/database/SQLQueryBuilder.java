@@ -13,11 +13,37 @@ public class SQLQueryBuilder {
     public static String generateInsert(Object entity, String tableName) {
         Class<?> clazz = entity.getClass();
         Field[] fields = clazz.getDeclaredFields();
+        Field[] superFields = clazz.getSuperclass().getDeclaredFields();
         StringBuilder columns = new StringBuilder();
         StringBuilder values = new StringBuilder();
-
+        
+        
         boolean firstField = true;
         for (Field field : fields) {
+            field.setAccessible(true);
+            if (!field.getName().equalsIgnoreCase("id")) {
+                if (!firstField) {
+                    columns.append(", ");
+                    values.append(", ");
+                } else {
+                    firstField = false;
+                }
+                columns.append(field.getName());
+                try {
+                    Object value = field.get(entity);
+                    if (value == null) {
+                        values.append("NULL");
+                    } else if (value instanceof String || value instanceof Date || value instanceof LocalDate || value instanceof Timestamp) {
+                        values.append("'").append(value).append("'");
+                    } else {
+                        values.append(value);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        for (Field field : superFields) {
             field.setAccessible(true);
             if (!field.getName().equalsIgnoreCase("id")) {
                 if (!firstField) {

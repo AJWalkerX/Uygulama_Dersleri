@@ -3,7 +3,7 @@ package com.ajwalker.entity;
 public class BaseEntity {
     protected Long id;
     protected Integer state;
-
+    
 
     public BaseEntity() {
     }
