@@ -46,7 +46,6 @@ public class UserRepository implements ICRUD<User> {
         Optional<User> userOptional = findById(id);
         if(userOptional.isPresent()){
             User user = userOptional.get();
-            System.out.println(user.getId());
             user.setState(0);
             return update(user);
         }
